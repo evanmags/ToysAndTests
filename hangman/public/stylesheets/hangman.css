@@ -1,0 +1,28 @@
+.hidden{
+    opacity: 0;
+}
+
+.show{
+    opacity: 1;
+}
+
+.wordDisplay{
+    height: 20vh;
+    display: flex;
+}
+
+.wordDisplay div{
+    display: inline-block;
+    width: 40px;
+    height: 2rem;
+    border-bottom: 2px solid #777;
+    border-radius: 4px;
+}
+
+.wordDisplay div h1{
+    margin: 0;
+    padding: 0;
+    line-height: 2rem;
+    text-align: center;
+    transition: opacity .4s;
+}

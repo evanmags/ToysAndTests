@@ -1,0 +1,52 @@
+body{
+
+    background: #FEFAF8;
+    color: #383B46;
+} 
+
+.jumbotron {
+    margin-top: 2em;
+    background: #A1B8CD;
+}
+
+.cards{
+    display: flex;
+    justify-content: space-around;
+}
+div.card{
+    width: 40%;
+    margin: 20px;
+    float: left;
+
+}
+
+div.card-header{
+    height: 3em;
+    background: #A1B8CD;
+}
+
+li:hover{
+    color: darkgrey;
+    text-decoration: underline;
+}
+
+.inputs p{
+    margin: .2em 0;
+}
+
+div.form{
+    width: 80%;
+    margin: 0 auto 1em;
+    display: flex;
+    align-items: center;
+}
+
+div.form input{
+    margin-right: 5%;
+    width: 50%;
+}
+ 
+div.form button{
+    border-radius: 3px;
+    background-color: buttonface;
+}

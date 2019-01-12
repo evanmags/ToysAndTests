@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="paper.css">
+        <script src="howler.js"></script>
+        <script type="text/javascript" src="paper-full.js"></script>
+        <script type="text/paperscript" canvas="canvas1"> 
+    //---------------variable definitions------------------//             
+            var circles = [];
+            var paths = [];
+            var text = "";
+            var h1 = document.querySelector("h1");
+            var area = (view.size.height * view.size.width);
+            var centerX = (view.size.width/2)
+            var centerY = (view.size.height/2)
+            var clicks = 0;
+            var sounds = [
+                new Howl({ src: ['sounds/bubbles.mp3']}),
+                new Howl({ src: ['sounds/clay.mp3']}),
+                new Howl({ src: ['sounds/confetti.mp3']}),
+                new Howl({ src: ['sounds/corona.mp3']}),
+                new Howl({ src: ['sounds/dotted-spiral.mp3']}),
+                new Howl({ src: ['sounds/flash-1.mp3']}),
+                new Howl({ src: ['sounds/flash-2.mp3']}),
+                new Howl({ src: ['sounds/flash-3.mp3']}),
+                new Howl({ src: ['sounds/glimmer.mp3']}),
+                new Howl({ src: ['sounds/moon.mp3']}),
+                new Howl({ src: ['sounds/pinwheel.mp3']}),
+                new Howl({ src: ['sounds/piston-1.mp3']}),
+                new Howl({ src: ['sounds/piston-2.mp3']}),
+                new Howl({ src: ['sounds/piston-3.mp3']}),
+                new Howl({ src: ['sounds/prism-1.mp3']}),
+                new Howl({ src: ['sounds/prism-2.mp3']}),
+                new Howl({ src: ['sounds/prism-3.mp3']}),
+                new Howl({ src: ['sounds/splits.mp3']}),
+                new Howl({ src: ['sounds/squiggle.mp3']}),
+                new Howl({ src: ['sounds/strike.mp3']}),
+                new Howl({ src: ['sounds/suspension.mp3']}),
+                new Howl({ src: ['sounds/timer.mp3']}),
+                new Howl({ src: ['sounds/ufo.mp3']}),
+                new Howl({ src: ['sounds/veil.mp3']}),
+                new Howl({ src: ['sounds/wipe.mp3']}),
+                new Howl({ src: ['sounds/zig-zag.mp3']}),
+            ];
+            var auxKeys = {
+                space: {word: " "},
+                tab: {word: " "},
+                enter: {word: " "},
+                alt: {word: ""},
+                shift: {word: ""},
+            };
+    //---------------function definitions------------------// 
+            function display(event){
+                if(auxKeys[event.key]){
+                    text += auxKeys[event.key].word;
+                }
+                else if(event.key == 'backspace'){
+                    text = text.slice(0, (text.length - 1));
+                }
+                else if(event.key == 'escape'){
+                    text = '';
+                    for(var i = 0; i < circles.length; i++){
+                        circles[i].remove();
+                    }
+                    for(i = 0; i < paths.length; i++){
+                        paths[i].remove();
+                    }
+                }
+                else{
+                    text += event.key;
+                }
+                if(text.length === 44){
+                    text = "that's too much!";
+                }
+                dis1 = text.replace(/trump/g, " idiot ");
+                dis2 = dis1.replace(/loser/g, " be nice ");
+                dis3 = dis2.replace(/clerks/g, " be kind rewind ");
+                h1.textContent = dis3;
+            }
+
+            function clickDraw(){
+                if(clicks < 5){
+                    var err = "type something";
+                    h1.textContent = err;
+                }
+                else if(clicks < 10){
+                    err = "that still doesn't do anything";
+                    h1.textContent = err;
+                }
+                else if(clicks < 15){
+                    err = "seriously, type something";
+                    h1.textContent = err;
+                }
+                else if(clicks < 20){
+                    err = "Ok, you win. Draw something";
+                    h1.textContent = err;
+                }
+                else if(clicks >= 20){
+                    err = " ";
+                    h1.textContent = err;
+                }
+            }
+
+            function makeCircles(){
+                var maxPoint = new Point(view.size.width, view.size.height);
+                var randomPoint = Point.random();
+                var point = maxPoint * randomPoint;
+                var newCircle = new Path.Circle(point, 1);
+                newCircle.fillColor = {
+                    hue: Math.random() * 360,
+                    saturation: 1,
+                    brightness: 1
+                }
+                circles.push(newCircle);
+                clicks = 0;
+            }
+
+            function rndmSound(){
+                var q = Math.floor(Math.random()*sounds.length);
+                sounds[q].play();
+            }
+    //---------------UX/key events------------------// 
+            function onKeyDown(event){
+                rndmSound();
+                makeCircles();
+                for(i = event.key; i > 1; i--){
+                    makeCircles();
+                };
+                display(event);
+            };
+
+    //---------------UX/Mouse events------------------//        
+            function onMouseDown(event){
+                clickDraw()
+                path = new Path();
+                path.fillColor = {
+                    hue: Math.random() * 360,
+                    saturation: 1,
+                    brightness: 1
+                }
+                path.add(event.point);
+                paths.push(path);
+                clicks++;
+                text = "";
+            }
+
+            function onMouseDrag(event) {
+                if(clicks >= 20){
+                    var step = event.delta;
+                    step.angle += 90;
+                    
+                    var top = event.middlePoint + step;
+                    var bottom = event.middlePoint - step;
+
+                    path.add(top);
+                    path.insert(0, bottom);
+                    path.smooth();
+            }}
+
+            function onMouseUp(event) {
+                if(clicks >= 20){
+                    path.add(event.point);
+                    path.closed = true;
+                    path.smooth();
+            }}
+
+    //---------------frame rate events------------------//
+            function onFrame(event){
+                for(var i = 0; i < circles.length; i++){
+                    circles[i].fillColor.hue += 1.6;
+                    circles[i].scale(1.1);
+                    if(circles[i].area > (area*area*8)){
+                        circles[i].remove();
+                        circles.splice(i, 1);
+                        console.log(circles);
+                    }
+                }   
+            }
+
+
+        </script>
+    </head>
+    <body>
+        <h1>xplr</h1>
+        <canvas id="canvas1" resize></canvas>
+    </body>
+</html>

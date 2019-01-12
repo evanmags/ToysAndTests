@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title>Rainbow Fish</title>
+
+        <meta name="description" content="A simple paper.js app, created on accident, that reminded me of the iconic Rainbow Fish book.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="rbfish.css">
+        
+        <script type="text/javascript" src="paper-full.min.js"></script>
+        <script type="text/paperscript" canvas="myCanvas">  
+            var hex = "";
+            squares = [];
+            var length = view.size.width;
+            var height = view.size.height+50;
+
+            //remove comment and add "size()" 
+            // as the last integer of path.circle on square 
+            // to create a growth circle patern
+            //var s = .01;
+            //function size(){
+            //    s = s + s/2;
+            //    return s;
+            //}
+
+            function genCol(){
+                var hexs = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
+                hex = "#";
+                for(c = 0; c < 6; c++){
+                    y = Math.floor(Math.random() * 16); 
+                    hex = String(hex + hexs[y]);
+                } 
+                return hex;
+            }
+
+            genCol();
+            for(x = 0; x <= length; x += 50){
+                for(y = 0; y <= height; y += 50){
+                    var square = new Path.Circle(new Point(x, y), 40);
+                    square.fillColor = hex;
+                    squares.push(square);
+                }
+            };
+            
+            function onFrame(event){
+                for(i = 0; i < squares.length; i++){
+                    squares[i].fillColor.hue += .1;
+                }
+            }
+
+            function onMouseDown(event){
+                var f = Math.floor(Math.random()*squares.length)
+                x = squares[f].fillColor.hue;
+                squares[f].fillColor.hue = x*3;
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="myCanvas" resize></canvas>
+    </body>
+</html>
