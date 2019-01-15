@@ -1,3 +1,7 @@
+body{
+    background: #bdcaff;
+}
+
 .hidden{
     opacity: 0;
 }
@@ -7,14 +11,15 @@
 }
 
 .wordDisplay{
-    height: 20vh;
+    max-width: 90vw;
     display: flex;
 }
 
 .wordDisplay div{
     display: inline-block;
-    width: 40px;
-    height: 2rem;
+    min-width: 50px;
+    max-width: 200px;
+    margin: auto;
     border-bottom: 2px solid #777;
     border-radius: 4px;
 }
@@ -22,7 +27,6 @@
 .wordDisplay div h1{
     margin: 0;
     padding: 0;
-    line-height: 2rem;
     text-align: center;
     transition: opacity .4s;
 }

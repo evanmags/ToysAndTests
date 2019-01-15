@@ -4,18 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/stylesheets/TrueGrid.min.css">
     <link rel="stylesheet" href="/stylesheets/hangman.css">
     <title>Hangman</title>
 </head>
 <body>
-    <div class="wordDisplay">
-        <% word.forEach(function(letter){ %>
-            <div>
-                <h1 class="hidden"><%=letter%></h1>
-            </div>
-        <% }) %>
+    <div class="grid">
+        <div class="border box-2-2 wide-10-sm tall-10-sm green"></div>
+        <div class="lives box-3-2">Lives Remaining:</div>
+        <div class="score box-10-2">Score:</div>
+        <div class="wordDisplay box-1-10 box-3-10-md wide-12 wide-8-md orange">
+            <% word.forEach(function(letter){ %>
+                <div>
+                    <h1 class="hidden"><%=letter%></h1>
+                </div>
+            <% }) %>
+        </div>
+        <div id="jail" class="box-2-4 tall-4"></div>
     </div>
-
     <script src="/scripts/hangman.js"></script>
+    <script src="/scripts/TrueGrid.min.js"></script>
 </body>
 </html>
